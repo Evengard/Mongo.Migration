@@ -25,14 +25,14 @@ internal class StartUpDatabaseMigrationRunner : IStartUpDatabaseMigrationRunner
             collectionLocator,
             migrationRunner)
     {
-        if (settings.Database is null && (settings.ConnectionString is null || settings.ClientSettings is null || _client is null))
+        if (settings.Database is null || (settings.ConnectionString is null && settings.ClientSettings is null && _client is null))
         {
             throw new MongoMigrationNoMongoClientException();
         }
 
         this._databaseName = settings.Database;
 
-        if ((settings.ConnectionString is null || settings.ClientSettings is null) && _client is not null)
+        if (settings.ConnectionString is null && settings.ClientSettings is null && _client is not null)
         {
             return;
         }
