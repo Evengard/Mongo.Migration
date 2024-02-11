@@ -1,11 +1,9 @@
-using System.Linq;
-
 using Mongo.Migration.Documents.Attributes;
 using Mongo.Migration.Documents.Locators;
 using Mongo.Migration.Exceptions;
 using Mongo.Migration.Startup;
-
 using MongoDB.Driver;
+using System.Linq;
 
 namespace Mongo.Migration.Migrations.Database;
 
@@ -27,12 +25,19 @@ internal class StartUpDatabaseMigrationRunner : IStartUpDatabaseMigrationRunner
             collectionLocator,
             migrationRunner)
     {
-        if ((settings.ConnectionString == null && settings.Database == null) || settings.ClientSettings == null)
+        if (settings.Database is null && (settings.ConnectionString is null || settings.ClientSettings is null || _client is null))
         {
             throw new MongoMigrationNoMongoClientException();
         }
 
-        if (settings.ClientSettings != null)
+        this._databaseName = settings.Database;
+
+        if (_client is not null)
+        {
+            return;
+        }
+
+        if (settings.ClientSettings is not null)
         {
             this._client = new MongoClient(settings.ClientSettings);
         }
@@ -40,27 +45,6 @@ internal class StartUpDatabaseMigrationRunner : IStartUpDatabaseMigrationRunner
         {
             this._client = new MongoClient(settings.ConnectionString);
         }
-
-        this._databaseName = settings.Database;
-    }
-
-    public StartUpDatabaseMigrationRunner(
-        IMongoClient client,
-        IMongoMigrationSettings settings,
-        ICollectionLocator collectionLocator,
-        IDatabaseMigrationRunner migrationRunner)
-        : this(
-            collectionLocator,
-            migrationRunner)
-    {
-        this._client = client;
-        if (settings.ConnectionString == null && settings.Database == null)
-        {
-            return;
-        }
-
-        this._client = new MongoClient(settings.ConnectionString);
-        this._databaseName = settings.Database;
     }
 
     private StartUpDatabaseMigrationRunner(

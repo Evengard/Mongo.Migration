@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Platforms>x64</Platforms>
-    <Company>Sherweb</Company>
-    <Authors>Sherweb</Authors>
+    <Platforms>AnyCPU</Platforms>
+    <Company>Evengard</Company>
+    <Authors>Evengard</Authors>
     <Product>Office Protect</Product>
-    <PackageId>OfficeProtect.Mongo.Migration</PackageId>
+    <PackageId>Evengard.Mongo.Migration</PackageId>
     <Description>Forked from Mongo.Migration which is designed for MongoDB C# Driver to migrate your documents easily on-the-fly.</Description>
-    <RepositoryUrl>https://github.com/sherweb/Mongo.Migration.git</RepositoryUrl>
+    <RepositoryUrl>https://github.com/Evengard/Mongo.Migration.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageIcon>op-icon.png</PackageIcon>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -25,7 +25,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="LightInject" Version="6.6.4" />
-    <PackageReference Include="Microsoft.AspNetCore.MiddlewareAnalysis" Version="6.0.25" />
+    <PackageReference Include="Microsoft.AspNetCore.MiddlewareAnalysis" Version="6.0.26" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="MinVer" Version="4.3.0">
       <PrivateAssets>all</PrivateAssets>
