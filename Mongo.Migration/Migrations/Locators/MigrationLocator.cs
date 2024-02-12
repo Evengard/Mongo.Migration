@@ -1,21 +1,19 @@
-﻿using System;
+﻿using Mongo.Migration.Documents;
+using Mongo.Migration.Exceptions;
+using Mongo.Migration.Extensions;
+using Serilog;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-
-using Mongo.Migration.Documents;
-using Mongo.Migration.Exceptions;
-using Mongo.Migration.Extensions;
-
-using NLog;
 
 namespace Mongo.Migration.Migrations.Locators;
 
 public abstract class MigrationLocator<TMigrationType> : IMigrationLocator<TMigrationType>
     where TMigrationType : class, IMigration
 {
-    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+    private readonly ILogger _logger = Log.ForContext<MigrationLocator<TMigrationType>>();
 
     private IEnumerable<Assembly> _assemblies;
 
@@ -34,7 +32,7 @@ public abstract class MigrationLocator<TMigrationType> : IMigrationLocator<TMigr
 
             if (this._migrations.NullOrEmpty())
             {
-                this._logger.Debug(new NoMigrationsFoundException());
+                this._logger.Debug(new NoMigrationsFoundException(), "No migrations located");
             }
 
             return this._migrations;

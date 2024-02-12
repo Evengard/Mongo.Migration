@@ -22,17 +22,31 @@ internal class StartUpDatabaseMigrationRunner : IStartUpDatabaseMigrationRunner
         ICollectionLocator collectionLocator,
         IDatabaseMigrationRunner migrationRunner)
         : this(
+            null,
+            settings,
             collectionLocator,
             migrationRunner)
     {
-        if (settings.Database is null || (settings.ConnectionString is null && settings.ClientSettings is null && _client is null))
+    }
+
+    public StartUpDatabaseMigrationRunner(
+        IMongoClient client,
+        IMongoMigrationSettings settings,
+        ICollectionLocator collectionLocator,
+        IDatabaseMigrationRunner migrationRunner)
+        : this(
+            collectionLocator,
+            migrationRunner)
+    {
+        if (settings.Database is null || (settings.ConnectionString is null && settings.ClientSettings is null && client is null))
         {
             throw new MongoMigrationNoMongoClientException();
         }
 
+        this._client = client;
         this._databaseName = settings.Database;
 
-        if (settings.ConnectionString is null && settings.ClientSettings is null && _client is not null)
+        if (settings.ConnectionString is null && settings.ClientSettings is null && client is not null)
         {
             return;
         }
@@ -45,19 +59,6 @@ internal class StartUpDatabaseMigrationRunner : IStartUpDatabaseMigrationRunner
         {
             this._client = new MongoClient(settings.ConnectionString);
         }
-    }
-
-    public StartUpDatabaseMigrationRunner(
-        IMongoClient client,
-        IMongoMigrationSettings settings,
-        ICollectionLocator collectionLocator,
-        IDatabaseMigrationRunner migrationRunner)
-        : this(
-            settings,
-            collectionLocator,
-            migrationRunner)
-    {
-        this._client = client;
     }
 
     private StartUpDatabaseMigrationRunner(

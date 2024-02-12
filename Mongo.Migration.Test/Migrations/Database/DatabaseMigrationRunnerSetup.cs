@@ -3,16 +3,15 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 
-using NLog;
-
 using NUnit.Framework;
+using Serilog;
 
 namespace Mongo.Migration.Test.Migrations.Database;
 
 [SetUpFixture]
 public class DatabaseMigrationRunnerSetup
 {
-    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+    private readonly ILogger _logger = Log.ForContext<DatabaseMigrationRunnerSetup>();
 
     [OneTimeSetUp]
     public void GlobalSetup()
@@ -24,7 +23,7 @@ public class DatabaseMigrationRunnerSetup
         }
         catch (BsonSerializationException ex)
         {
-            this._logger.Warn(ex);
+            this._logger.Warning(ex, "Serialization registration failure");
         }
     }
 
