@@ -16,7 +16,7 @@ parameters:
     default: "none"
   - name: dotNetSdkVersion
     type: string
-    default: '6.x'
+    default: '8.x'
   - name: gitRepoName
     type: string
     default: "Mongo.Migration"
